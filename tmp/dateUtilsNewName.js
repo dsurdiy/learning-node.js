@@ -1,5 +1,5 @@
 function getCurrentDate() {
-  return Date.now();
+  return Date.now() + global.testData;
 }
 
 module.exports = {
