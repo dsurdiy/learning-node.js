@@ -1,18 +1,21 @@
-const fs = require("fs").promises;
-const path = require("path");
+const http = require("http");
 
-(async () => {
-  try {
-    const data = await fs.readFile("./data.txt", "utf-8");
-    console.log(data);
+const PORT = 8982;
 
-    const newContent = `${data} qwerty`;
-    await fs.writeFile("./data1.txt", newContent, "utf-8");
-
-    // await fs.rename("./dateUtilsNewName.js", "./tmp/dateUtilsNewName.js");
-
-    console.log(await fs.readdir("./tmp"));
-  } catch (error) {
-    console.log(error);
+const requestHahdler = (request, response) => {
+  if (request.url.indexOf("/home") >= 0) {
+    response.writeHead(200, { "Content-Type": "text/json" });
+    return response.end('{ "url": "homepage" }');
   }
-})();
+  response.writeHead(200, { "Content-Type": "text/json" });
+  return response.end('{ "url": "other" }');
+};
+
+const server = http.createServer(requestHahdler);
+
+server.listen(PORT, (err) => {
+  if (err) {
+    console.error("Error at server launch: ", err);
+  }
+  console.log(`Servet works at port ${PORT}`);
+});
