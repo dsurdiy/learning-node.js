@@ -1,12 +1,8 @@
 const books = require("../../models/books");
 
-const getAll = async (req, res, next) => {
-  try {
-    const result = await books.getAll();
-    res.json(result);
-  } catch (error) {
-    next(error);
-  }
+const getAll = async (req, res) => {
+  const result = await books.getAll();
+  res.json(result);
 };
 
 module.exports = getAll;

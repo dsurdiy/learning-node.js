@@ -2,16 +2,26 @@ const express = require("express");
 
 const ctrl = require("../../controllers/books");
 
+const { ctrlWrapper } = require("../../helpers");
+
+const { validateBody } = require("../../middlewares");
+
+const schemas = require("../../schemas/books");
+
 const router = express.Router();
 
-router.get("/", ctrl.getAll);
+router.get("/", ctrlWrapper(ctrl.getAll));
 
-router.get("/:id", ctrl.getById);
+router.get("/:id", ctrlWrapper(ctrl.getById));
 
-router.post("/", ctrl.add);
+router.post("/", validateBody(schemas.addSchema), ctrlWrapper(ctrl.add));
 
-router.put("/:id", ctrl.updateById);
+router.put(
+  "/:id",
+  validateBody(schemas.addSchema),
+  ctrlWrapper(ctrl.updateById)
+);
 
-router.delete("/:id", ctrl.removeById);
+router.delete("/:id", ctrlWrapper(ctrl.removeById));
 
 module.exports = router;
