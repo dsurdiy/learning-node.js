@@ -53,11 +53,16 @@ const addSchema = Joi.object({
   isbn: Joi.string().pattern(isbnRegexp).required(),
 });
 
-const Book = model("book", bookSchema);
+const updateFavoriteSchema = Joi.object({
+  favorite: Joi.boolean().required(),
+});
 
 const schemas = {
   addSchema,
+  updateFavoriteSchema,
 };
+
+const Book = model("book", bookSchema);
 
 module.exports = {
   Book,
