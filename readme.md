@@ -1,17 +1,13 @@
-[Структура бекенда](./slides/backend-structure.jpg)
+[Как HTTP-протокол общается с бекендом](./slides/HTTP-common-schema.jpg)
 
-[Почему noSQL базы называают документоориентированными](./slides/documents-database-schema.jpg)
+[Когда ответ на HTTP-запрос должен быть персонализированным](./slides/HTTP-personal-request-schema.jpg)
 
-[Какие типы баз данных бывают](./slides/database-types.jpg)
+[Как сделать ответ на HTTP-запрос персонализированным и не логинится при каждом запросе](./slides/frontend-backend-requests-with-token.jpg)
 
-[Почему нужно использовать удаленную базу данных](./slides/remote-database.jpg)
+[Разница между регистрацией, аутентификацией и авторизацией](./slides/register-auth-steps.jpg)
 
-[Как работает пакет dotenv](./slides/dotenv-work-schema.jpg)
+[Этапы создания модуля регистрации-аутентфикации-авторизации](./slides/reigster-auth-create-steps.jpg)
 
-[Пример структуры 'схема-модель-коллекция' в жизни](./slides/schema-model-example.jpg)
+[Разница между хэшем и шифрованием](./slides/hash-schema.jpg)
 
-[Схема-Модель-коллекцция в MongoDB](./slides/schema-model-collection.jpg)
-
-[Как обрабатывается ошибка не найденного маршрута в Express](./slides/express-middleware-not-found-shema.jpg)
-
-[Как Express обрабатывает ошибку, переданную в next](./slides/express-error-handler.jpg)
+[Работа с переменными окружения на локальном хосте и на удаленном сервере](./slides/process.env-and-deploy.jpg)
