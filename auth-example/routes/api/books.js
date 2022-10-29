@@ -12,9 +12,9 @@ const router = express.Router();
 
 // const getAllWrapper = ctrlWrapper(ctrl.getAll)
 // router.get("/", getAllWrapper)
-router.get("/", ctrlWrapper(ctrl.getAll));
+router.get("/", authenticate, ctrlWrapper(ctrl.getAll));
 
-router.get("/:id", isValidId, ctrlWrapper(ctrl.getById));
+router.get("/:id", authenticate, isValidId, ctrlWrapper(ctrl.getById));
 
 router.post(
   "/",
@@ -25,6 +25,7 @@ router.post(
 
 router.put(
   "/:id",
+  authenticate,
   isValidId,
   validateBody(schemas.addSchema),
   ctrlWrapper(ctrl.updateById)
@@ -32,11 +33,12 @@ router.put(
 
 router.patch(
   "/:id/favorite",
+  authenticate,
   isValidId,
   validateBody(schemas.updateFavoriteSchema),
   ctrlWrapper(ctrl.updateFavorite)
 );
 
-router.delete("/:id", isValidId, ctrlWrapper(ctrl.removeById));
+router.delete("/:id", authenticate, isValidId, ctrlWrapper(ctrl.removeById));
 
 module.exports = router;
