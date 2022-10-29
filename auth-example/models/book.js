@@ -25,6 +25,11 @@ const bookSchema = new Schema(
       enum: genreList,
       required: true,
     },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
     // isbn: {
     //     type: String,
     //     match: isbnRegexp,
