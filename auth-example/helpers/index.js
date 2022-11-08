@@ -1,5 +1,11 @@
-const sendMail = require("./sendMail");
+const RequestError = require("./RequestError");
+const ctrlWrapper = require("./ctrlWrapper");
+const handleSaveErrors = require("./handleSaveErrors");
+const sendEmail = require("./sendEmail");
 
 module.exports = {
-    sendMail
-}
+  RequestError,
+  ctrlWrapper,
+  handleSaveErrors,
+  sendEmail,
+};
