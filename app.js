@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const routerApi = require("./api");
 
 const app = express();
 
@@ -7,6 +8,8 @@ const app = express();
 app.use(express.json());
 // cors
 app.use(cors());
+
+app.use("/api", routerApi);
 
 app.use((_, res, __) => {
   res.status(404).json({
