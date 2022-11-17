@@ -28,4 +28,32 @@ router.get("/tasks", async (req, res, next) => {
   }
 });
 
+router.get("/tasks/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  const client = await new MongoClient(uriDb, {
+    useUnifiedTopology: true,
+  }).connect();
+
+  try {
+    const objectId = new ObjectId(id);
+    const [result] = await client
+      .db()
+      .collection("todos")
+      .find({ _id: objectId })
+      .toArray();
+
+    res.json({
+      status: "success",
+      code: 200,
+      data: { task: result },
+    });
+  } catch (e) {
+    console.error(e);
+    next(e);
+  } finally {
+    await client.close();
+  }
+});
+
 module.exports = router;
