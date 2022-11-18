@@ -56,4 +56,30 @@ router.get("/tasks/:id", async (req, res, next) => {
   }
 });
 
+router.post("/tasks", async (req, res, next) => {
+  const { title, text } = req.body;
+
+  const client = await new MongoClient(uriDb, {
+    useUnifiedTopology: true,
+  }).connect();
+
+  try {
+    const result = await client
+      .db()
+      .collection("todos")
+      .insertOne({ title, text, isDone: false });
+
+    res.status(201).json({
+      status: "success",
+      code: 201,
+      data: { task: result },
+    });
+  } catch (e) {
+    console.error(e);
+    next(e);
+  } finally {
+    await client.close();
+  }
+});
+
 module.exports = router;
