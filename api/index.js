@@ -148,4 +148,32 @@ router.patch("/tasks/:id/status", async (req, res, next) => {
   }
 });
 
+router.delete("/tasks/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  const client = await new MongoClient(uriDb, {
+    useUnifiedTopology: true,
+  }).connect();
+
+  try {
+    const objectId = new ObjectId(id);
+
+    const { value: result } = await client
+      .db()
+      .collection("todos")
+      .findOneAndDelete({ _id: objectId });
+
+    res.json({
+      status: "success",
+      code: 200,
+      data: { task: result },
+    });
+  } catch (e) {
+    console.error(e);
+    next(e);
+  } finally {
+    await client.close();
+  }
+});
+
 module.exports = router;
