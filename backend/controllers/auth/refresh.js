@@ -1,32 +1,42 @@
 const jwt = require("jsonwebtoken");
 
-const {User} = require("../../models/user")
+const { User } = require("../../models/user");
 
-const {RequestError, createTokens} = require("../../helpers")
+const { RequestError } = require("../../helpers");
 
-const {REFRESH_TOKEN_SECRET_KEY} = process.env;
+const { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } = process.env;
 
-const refresh = async(req, res) => {
-    const {refreshToken: token} = req.body;
-    try {
-        const {id} = jwt.verify(token, REFRESH_TOKEN_SECRET_KEY);
-        const user = await User.findById(id);
-        if(!user || user.refreshToken !== token) {
-            throw new Error("token expired")
-        }
+const refresh = async (req, res) => {
+  const { refreshToken: token } = req.body;
 
-       const {accessToken, refreshToken} = await createTokens(user._id);
+  try {
+    const { id } = jwt.verify(token, REFRESH_TOKEN_SECRET_KEY);
+    const user = await User.findById(id);
 
-        await User.findByIdAndUpdate(user._id, {accessToken, refreshToken})
-
-        res.json({
-            accessToken,
-            refreshToken,
-        })
+    if (!user || user.refreshToken !== token) {
+      throw new Error("Token expired");
     }
-    catch(error) {
-        throw(RequestError(401, error.message))
-    }
-}
+
+    const payload = {
+      id: user._id,
+    };
+
+    const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET_KEY, {
+      expiresIn: "15m",
+    });
+    const refreshToken = jwt.sign(payload, REFRESH_TOKEN_SECRET_KEY, {
+      expiresIn: "7d",
+    });
+
+    await User.findByIdAndUpdate(user._id, { accessToken, refreshToken });
+
+    res.json({
+      accessToken,
+      refreshToken,
+    });
+  } catch (error) {
+    throw RequestError(401, error.message);
+  }
+};
 
 module.exports = refresh;
