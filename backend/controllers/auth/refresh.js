@@ -2,9 +2,9 @@ const jwt = require("jsonwebtoken");
 
 const { User } = require("../../models/user");
 
-const { RequestError } = require("../../helpers");
+const { RequestError, createTokens } = require("../../helpers");
 
-const { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } = process.env;
+const { REFRESH_TOKEN_SECRET_KEY } = process.env;
 
 const refresh = async (req, res) => {
   const { refreshToken: token } = req.body;
@@ -17,16 +17,7 @@ const refresh = async (req, res) => {
       throw new Error("Token expired");
     }
 
-    const payload = {
-      id: user._id,
-    };
-
-    const accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET_KEY, {
-      expiresIn: "15m",
-    });
-    const refreshToken = jwt.sign(payload, REFRESH_TOKEN_SECRET_KEY, {
-      expiresIn: "7d",
-    });
+    const { accessToken, refreshToken } = createTokens(user._id);
 
     await User.findByIdAndUpdate(user._id, { accessToken, refreshToken });
 
